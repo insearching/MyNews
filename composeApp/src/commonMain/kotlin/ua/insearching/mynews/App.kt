@@ -38,8 +38,7 @@ fun App() {
             NavHost(
                 navController = navController,
                 startDestination = Route.FeedScreen,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 composable<Route.FeedScreen>(
                     exitTransition = { slideOutHorizontally() },

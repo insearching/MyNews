@@ -3,7 +3,6 @@ package ua.insearching.mynews.news.presentation.feed
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
@@ -26,9 +25,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fadingEdge
 import org.koin.compose.viewmodel.koinViewModel
 import ua.insearching.mynews.FAB_EXPLODE_BOUNDS_KEY
 import ua.insearching.mynews.news.domain.model.Story
@@ -143,7 +144,16 @@ fun FeedContent(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier
+            .padding(16.dp)
+            .fadingEdge(
+                Brush.verticalGradient(
+                    0f to Color.Transparent,
+                    0.1f to Color.Black,
+                    0.9f to Color.Black,
+                    1f to Color.Transparent
+                )
+            ),
         verticalArrangement = Arrangement.spacedBy(32.dp)
     ) {
         items(stories) {

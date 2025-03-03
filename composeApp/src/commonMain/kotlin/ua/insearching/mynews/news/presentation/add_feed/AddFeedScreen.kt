@@ -6,21 +6,28 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ButtonElevation
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -105,21 +112,12 @@ fun SharedTransitionScope.AddFeedScreen(
                             Text(
                                 text = state.message.asString(),
                                 textAlign = TextAlign.Center,
-                                color = MaterialTheme.colorScheme.onPrimary
+                                color = MaterialTheme.colorScheme.primary
                             )
                         }
-                        Button(
-                            modifier = Modifier.fillMaxWidth(),
-                            onClick = {
-                                showDialog = true
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.secondary,
-                                contentColor = MaterialTheme.colorScheme.onSecondary
-                            ),
-                        ) {
-                            Text(stringResource(Res.string.add_feed))
-                        }
+                        AddFeedButton(onShowDialog = {
+                            showDialog = true
+                        })
                     }
                 }
 
@@ -151,23 +149,9 @@ fun SharedTransitionScope.AddFeedScreen(
                                 }
                             }
                         }
-                        Button(
-                            onClick = {
-                                showDialog = true
-                            },
-                            shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            modifier = Modifier
-                                .padding(
-                                    horizontal = 48.dp,
-                                    vertical = 8.dp
-                                ),
-                        ) {
-                            Text(stringResource(Res.string.add_feed))
-                        }
+                        AddFeedButton(onShowDialog = {
+                            showDialog = true
+                        })
                     }
                 }
             }
@@ -183,5 +167,28 @@ fun SharedTransitionScope.AddFeedScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun AddFeedButton(
+    onShowDialog: () -> Unit
+) {
+    Button(
+        onClick = {
+            onShowDialog()
+        },
+        shape = RoundedCornerShape(16.dp),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        modifier = Modifier
+            .padding(
+                horizontal = 48.dp,
+                vertical = 8.dp
+            ),
+    ) {
+        Text(stringResource(Res.string.add_feed))
     }
 }
