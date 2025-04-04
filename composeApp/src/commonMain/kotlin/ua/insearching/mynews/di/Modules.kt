@@ -15,8 +15,9 @@ import ua.insearching.mynews.news.domain.usecase.AddNewChannel
 import ua.insearching.mynews.news.domain.usecase.GetAllChannels
 import ua.insearching.mynews.news.domain.usecase.GetAllNews
 import ua.insearching.mynews.news.domain.usecase.UpdateNews
-import ua.insearching.mynews.news.presentation.add_feed.AddFeedScreenViewModel
-import ua.insearching.mynews.news.presentation.feed.FeedViewModel
+import ua.insearching.mynews.news.presentation.favorites.FavoritesViewModel
+import ua.insearching.mynews.news.presentation.profile.ProfileScreenViewModel
+import ua.insearching.mynews.news.presentation.home.HomeViewModel
 
 expect val platformModule: Module
 
@@ -36,7 +37,8 @@ val shareModule = module {
     single { AddNewChannel(get()) }
     single { UpdateNews(get()) }
 
-    viewModel { FeedViewModel(get(), get()) }
-    viewModel { AddFeedScreenViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get()) }
+    viewModel { FavoritesViewModel() }
+    viewModel { ProfileScreenViewModel(get(), get(), get()) }
 
 }

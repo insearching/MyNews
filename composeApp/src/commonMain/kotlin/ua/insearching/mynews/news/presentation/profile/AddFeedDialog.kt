@@ -1,4 +1,4 @@
-package ua.insearching.mynews.news.presentation.add_feed
+package ua.insearching.mynews.news.presentation.profile
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

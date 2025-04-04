@@ -59,6 +59,7 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.ksoup)
             implementation(libs.compose.webview.multiplatform)
+            implementation(libs.screen.size)
 
             api(libs.koin.core)
             api(libs.logging)

@@ -1,4 +1,4 @@
-package ua.insearching.mynews.news.presentation.add_feed
+package ua.insearching.mynews.news.presentation.profile
 
 data class ChannelUi(
     val name: String,

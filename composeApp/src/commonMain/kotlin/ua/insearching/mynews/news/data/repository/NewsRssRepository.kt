@@ -21,7 +21,7 @@ import ua.insearching.mynews.news.domain.model.Channel
 import ua.insearching.mynews.news.domain.model.Story
 import ua.insearching.mynews.news.domain.model.toChannel
 import ua.insearching.mynews.news.domain.repository.RssRepository
-import ua.insearching.mynews.news.presentation.add_feed.ChannelUi
+import ua.insearching.mynews.news.presentation.profile.ChannelUi
 
 class NewsRssRepository(
     private val rssParser: RssParser,
@@ -116,6 +116,9 @@ class NewsRssRepository(
             val xmlFeed = httpClient.get(url).bodyAsText()
             rssParser.parse(xmlFeed)
         } catch (ex: RssParsingException) {
+            log.i { "Failed to parse RSS feed: ${ex.message.toString()}" }
+            null
+        } catch (ex: Exception) {
             log.i { ex.message.toString() }
             null
         }

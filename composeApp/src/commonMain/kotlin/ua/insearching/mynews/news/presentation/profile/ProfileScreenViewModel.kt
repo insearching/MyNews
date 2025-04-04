@@ -1,4 +1,4 @@
-package ua.insearching.mynews.news.presentation.add_feed
+package ua.insearching.mynews.news.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,30 +16,30 @@ import ua.insearching.mynews.news.domain.repository.RssRepository
 import ua.insearching.mynews.news.domain.usecase.AddNewChannel
 import ua.insearching.mynews.news.domain.usecase.GetAllChannels
 
-class AddFeedScreenViewModel(
+class ProfileScreenViewModel(
     private val getAllChannels: GetAllChannels,
     private val addChannel: AddNewChannel,
     private val rssRepository: RssRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<AddFeedScreenState>(AddFeedScreenState.Loading)
+    private val _state = MutableStateFlow<ProfileScreenState>(ProfileScreenState.Loading)
     val state = _state
         .onStart { fetchChannels() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), _state.value)
 
 
-    fun onAction(action: AddFeedAction) {
+    fun onAction(action: ProfileAction) {
         when(action){
-            is AddFeedAction.OnFeedSelected -> {
+            is ProfileAction.OnFeedSelected -> {
 
             }
-            is AddFeedAction.OnFeedAdd -> {
+            is ProfileAction.OnFeedAdd -> {
                 viewModelScope.launch {
                     addChannel(action.channel)
                 }
             }
 
-            is AddFeedAction.OnFeedRemove -> {
+            is ProfileAction.OnFeedRemove -> {
                 viewModelScope.launch {
                     rssRepository.removeChannel(action.channel.link)
                 }
@@ -49,16 +49,16 @@ class AddFeedScreenViewModel(
 
     private fun fetchChannels() = viewModelScope.launch {
         _state.update {
-            AddFeedScreenState.Loading
+            ProfileScreenState.Loading
         }
 
         getAllChannels()
             .collectLatest { list ->
                 _state.update {
                     if (list.isEmpty()) {
-                        AddFeedScreenState.Error(UiText.StringResourceId(Res.string.no_channels_found))
+                        ProfileScreenState.Error(UiText.StringResourceId(Res.string.no_channels_found))
                     } else {
-                        AddFeedScreenState.Success(list)
+                        ProfileScreenState.Success(list)
                     }
                 }
             }
