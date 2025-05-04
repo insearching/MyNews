@@ -1,4 +1,4 @@
-rootProject.name = "MyNews"
+rootProject.name = "PickStream"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

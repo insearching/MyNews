@@ -73,11 +73,11 @@ kotlin {
 }
 
 android {
-    namespace = "ua.insearching.mynews"
+    namespace = "com.insearching.pickstream"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "ua.insearching.mynews"
+        applicationId = "com.insearching.pickstream"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
