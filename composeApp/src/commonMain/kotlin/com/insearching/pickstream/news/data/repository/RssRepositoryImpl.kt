@@ -157,9 +157,16 @@ class RssRepositoryImpl(
 
 
     override suspend fun markUnmarkFavorite(guid: String, favorite: Boolean): Boolean {
-        return storyDao.markUnmarkFavorite(guid, favorite) != 0
+        return try {
+            storyDao.getStory(guid)?.let {
+                storyDao.upsertStory(it.copy(isFavorite = favorite))
+            }
+            true
+        }catch (ex: Exception){
+            log.i { ex.message }
+            false
+        }
     }
-
 
     private suspend fun fetchRssFeed(url: String): RssChannel? {
         return try {

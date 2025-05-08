@@ -1,11 +1,12 @@
 package com.insearching.pickstream.news.data.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.serialization.Serializable
 import com.insearching.pickstream.core.utils.DateUtils.toUTC
 import com.insearching.pickstream.news.domain.model.Story
+import kotlinx.serialization.Serializable
 
 const val STORY_TABLE_NAME = "stories"
 
@@ -21,6 +22,7 @@ const val STORY_TABLE_NAME = "stories"
 @Serializable
 data class StoryEntity(
     @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "guid")
     val guid: String,
     val rssLink: String,
     val title: String,
@@ -30,6 +32,7 @@ data class StoryEntity(
     val description: String?,
     val image: String?,
     val content: String?,
+    @ColumnInfo(name = "favorite")
     val isFavorite: Boolean = false
 )
 

@@ -8,7 +8,11 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -63,22 +67,28 @@ fun MainScreen() {
             }
         }
     }
-    MainScaffold(
-        rootNavController = rootNavController,
-        currentRoute = currentRoute,
-        isMediumExpandedWWSC = isMediumExpandedWWSC,
-        isBottomBarVisible = isBottomBarVisible,
-        isMainScreenVisible = isMainScreenVisible,
-        onItemClick = { currentNavigationItem ->
-            rootNavController.navigate(currentNavigationItem.route) {
-                popUpTo(rootNavController.graph.startDestinationRoute ?: "") {
-                    saveState = true
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        MainScaffold(
+            rootNavController = rootNavController,
+            currentRoute = currentRoute,
+            isMediumExpandedWWSC = isMediumExpandedWWSC,
+            isBottomBarVisible = isBottomBarVisible,
+            isMainScreenVisible = isMainScreenVisible,
+            onItemClick = { currentNavigationItem ->
+                rootNavController.navigate(currentNavigationItem.route) {
+                    popUpTo(rootNavController.graph.startDestinationRoute ?: "") {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
                 }
-                launchSingleTop = true
-                restoreState = true
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -90,7 +100,7 @@ fun MainScaffold(
     isMainScreenVisible: Boolean,
     onItemClick: (NavigationItem) -> Unit,
 ) {
-    Row {
+    Row(modifier = Modifier.statusBarsPadding()) {
         AnimatedVisibility(
             modifier = Modifier.background(MaterialTheme.colorScheme.surface),
             visible = isMediumExpandedWWSC && isMainScreenVisible,
@@ -134,10 +144,12 @@ fun MainScaffold(
                 }
             }
         ) { innerPadding ->
-            RootNavGraph(
-                rootNavController = rootNavController,
-                innerPadding = innerPadding,
-            )
+            Box(modifier = Modifier.navigationBarsPadding()) {
+                RootNavGraph(
+                    rootNavController = rootNavController,
+                    innerPadding = innerPadding,
+                )
+            }
         }
     }
 }

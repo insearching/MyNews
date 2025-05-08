@@ -7,12 +7,16 @@ import com.insearching.pickstream.news.data.database.entity.STORY_TABLE_NAME
 import com.insearching.pickstream.news.data.database.entity.StoryEntity
 import kotlinx.coroutines.flow.Flow
 
+
 @Dao
 interface StoryDao {
 
-    @Query("SELECT * FROM $STORY_TABLE_NAME WHERE isFavorite = 1")
+    @Query("SELECT * FROM $STORY_TABLE_NAME WHERE favorite = 1")
     fun getFavorites(): Flow<List<StoryEntity>>
 
-    @Query("UPDATE $STORY_TABLE_NAME SET isFavorite = :isFavorite WHERE guid = :guid")
-    suspend fun markUnmarkFavorite(guid: String, isFavorite: Boolean): Int
+    @Query("SELECT * FROM $STORY_TABLE_NAME WHERE guid = :guid")
+    suspend fun getStory(guid: String): StoryEntity?
+
+    @Upsert
+    suspend fun upsertStory(entity: StoryEntity)
 }
