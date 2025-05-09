@@ -21,10 +21,13 @@ import com.prof18.rssparser.model.RssChannel
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class RssRepositoryImpl(
     private val rssParser: RssParser,
@@ -110,9 +113,8 @@ class RssRepositoryImpl(
         emitAll(favoritesFeed)
     }
 
-    override fun fetchFavorites(): Flow<List<Story>> {
-        return storyDao.getFavorites()
-            .map { it.map { it.toStory() } }
+    override suspend fun fetchFavorites(): List<Story> = withContext(Dispatchers.IO) {
+        storyDao.getFavorites().map { it.toStory() }
     }
 
     override suspend fun updateFeed(): EmptyResult<DataError> {
@@ -155,15 +157,29 @@ class RssRepositoryImpl(
         channelDao.upsertChannel(channel.toEntity())
     }
 
-
     override suspend fun markUnmarkFavorite(guid: String, favorite: Boolean): Boolean {
         return try {
-            storyDao.getStory(guid)?.let {
-                storyDao.upsertStory(it.copy(isFavorite = favorite))
+            channelDao.getChannels().map {
+                it.stories.firstOrNull { it.guid == guid }
+            }.firstOrNull()?.let { story ->
+                if (favorite) {
+                    storyDao.addStoryToFavorites(story)
+                } else {
+                    storyDao.deleteStoryFromFavorites(story)
+                }
             }
             true
-        }catch (ex: Exception){
-            log.i { ex.message }
+        } catch (ex: Exception) {
+            log.i { "Error message -  ${ex.message}" }
+            false
+        }
+    }
+
+    override suspend fun isFavorite(guid: String): Boolean {
+        return try {
+            storyDao.getStory(guid) != null
+        } catch (ex: Exception) {
+            log.i { "Error message -  ${ex.message}" }
             false
         }
     }

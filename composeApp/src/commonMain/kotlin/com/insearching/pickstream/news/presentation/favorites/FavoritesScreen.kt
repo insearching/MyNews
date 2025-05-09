@@ -31,9 +31,7 @@ fun FavoritesScreenRoot(
         onAction = { action ->
             when (action) {
                 is FavoritesViewAction.OnStoryClick -> onStoryClick(action.story)
-                else -> Unit
             }
-            viewModel.onAction(action)
         },
         modifier = modifier
     )

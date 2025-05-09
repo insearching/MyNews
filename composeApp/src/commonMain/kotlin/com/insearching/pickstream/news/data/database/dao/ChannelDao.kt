@@ -6,6 +6,8 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 import com.insearching.pickstream.news.data.database.entity.CHANNEL_TABLE_NAME
 import com.insearching.pickstream.news.data.database.entity.ChannelEntity
+import com.insearching.pickstream.news.data.database.entity.STORY_TABLE_NAME
+import com.insearching.pickstream.news.data.database.entity.StoryEntity
 
 @Dao
 interface ChannelDao {

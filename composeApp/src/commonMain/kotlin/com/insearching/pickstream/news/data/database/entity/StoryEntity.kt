@@ -31,9 +31,7 @@ data class StoryEntity(
     val pubDate: String?,
     val description: String?,
     val image: String?,
-    val content: String?,
-    @ColumnInfo(name = "favorite")
-    val isFavorite: Boolean = false
+    val content: String?
 )
 
 fun Story.toEntity(rssLink: String): StoryEntity {
@@ -46,7 +44,6 @@ fun Story.toEntity(rssLink: String): StoryEntity {
         pubDate = publicationDate?.toUTC(),
         description = description,
         image = image,
-        content = content,
-        isFavorite = isFavorite
+        content = content
     )
 }

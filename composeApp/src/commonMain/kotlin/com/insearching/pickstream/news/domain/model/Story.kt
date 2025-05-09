@@ -1,11 +1,11 @@
 package com.insearching.pickstream.news.domain.model
 
-import com.prof18.rssparser.model.RssItem
-import kotlinx.datetime.LocalDateTime
-import kotlinx.serialization.Serializable
 import com.insearching.pickstream.core.utils.DateUtils.parseISODateTime
 import com.insearching.pickstream.core.utils.DateUtils.parseRFCDateTime
 import com.insearching.pickstream.news.data.database.entity.StoryEntity
+import com.prof18.rssparser.model.RssItem
+import kotlinx.datetime.LocalDateTime
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class Story(
@@ -18,8 +18,7 @@ data class Story(
     val image: String?,
     val content: String?,
     val channelName: String? = null,
-    val channelImage: String? = null,
-    val isFavorite: Boolean = false
+    val channelImage: String? = null
 )
 
 fun RssItem.toStory(): Story {
@@ -44,7 +43,6 @@ fun StoryEntity.toStory(): Story {
         publicationDate = pubDate?.parseISODateTime(),
         description = description,
         image = image,
-        content = content,
-        isFavorite = isFavorite
+        content = content
     )
 }

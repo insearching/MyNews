@@ -14,9 +14,10 @@ interface RssRepository {
     fun fetchAllChannels(): Flow<List<Channel>>
     fun fetchAllNews(): Flow<List<Story>>
     fun fetchNotified(): Flow<List<Story>>
-    fun fetchFavorites(): Flow<List<Story>>
+    suspend fun fetchFavorites(): List<Story>
     suspend fun updateFeed(): EmptyResult<DataError>
     suspend fun updateNotifiedChannels(): EmptyResult<DataError>
     suspend fun markUnmarkNotified(channel: Channel)
     suspend fun markUnmarkFavorite(guid: String, favorite: Boolean): Boolean
+    suspend fun isFavorite(guid: String): Boolean
 }

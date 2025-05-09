@@ -12,6 +12,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,8 +22,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.insearching.pickstream.news.data.BrowserLauncher
 import com.insearching.pickstream.news.domain.model.Story
 import com.insearching.pickstream.news.presentation.components.HtmlContent
-import com.insearching.pickstream.news.presentation.favorites.FavoritesViewAction
-import com.insearching.pickstream.news.presentation.favorites.FavoritesViewModel
 import com.multiplatform.webview.web.LoadingState
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.rememberWebViewState
@@ -37,20 +36,25 @@ import pickstream.composeapp.generated.resources.ic_favorite_border
 fun StoryScreenRoot(
     modifier: Modifier = Modifier,
     browserLauncher: BrowserLauncher = koinInject(),
-    viewModel: FavoritesViewModel = koinViewModel(),
+    viewModel: StoryScreenViewModel = koinViewModel(),
     story: Story
 ) {
 
     val isFavorite by viewModel.isFavorite.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.initialize(story)
+    }
+
     StoryScreen(
         modifier = modifier,
-        story = story.copy(isFavorite = isFavorite),
+        story = story,
+        isFavorite = isFavorite,
         onLinkClick = { url ->
             browserLauncher.openUrl(url)
         },
         onFavoriteClick = {
-            viewModel.onAction(FavoritesViewAction.MarkUnmarkFavorite(story))
+            viewModel.onAction(StoryViewAction.MarkUnmarkFavorite)
         }
     )
 }
@@ -59,6 +63,7 @@ fun StoryScreenRoot(
 fun StoryScreen(
     modifier: Modifier = Modifier,
     story: Story,
+    isFavorite: Boolean,
     onLinkClick: (String) -> Unit,
     onFavoriteClick: () -> Unit,
 ) {
@@ -66,7 +71,7 @@ fun StoryScreen(
         modifier = modifier
     ) {
         TopBar(
-            isFavorite = story.isFavorite,
+            isFavorite = isFavorite,
             onFavoriteClick = onFavoriteClick
         )
         if (story.content == null) {

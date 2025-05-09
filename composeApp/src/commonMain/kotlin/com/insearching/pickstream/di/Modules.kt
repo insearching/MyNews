@@ -12,6 +12,7 @@ import com.insearching.pickstream.news.domain.usecase.UpdateFeeds
 import com.insearching.pickstream.news.presentation.favorites.FavoritesViewModel
 import com.insearching.pickstream.news.presentation.home.HomeViewModel
 import com.insearching.pickstream.news.presentation.profile.ProfileScreenViewModel
+import com.insearching.pickstream.news.presentation.story.StoryScreenViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -40,4 +41,5 @@ val shareModule = module {
     viewModelOf(::HomeViewModel)
     viewModelOf(::FavoritesViewModel)
     viewModelOf(::ProfileScreenViewModel)
+    viewModelOf(::StoryScreenViewModel)
 }
